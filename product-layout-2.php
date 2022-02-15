@@ -1,3 +1,19 @@
+<?php
+include 'conn.php';
+$pquery1=mysqli_query($conn,"select p.*,c.name as c_name from product p join category c on c.id=p.category_id and p.id=1");
+$parr1=mysqli_fetch_assoc($pquery1);
+$pr_id=$parr1['id'];
+$pr_title=$parr1['title'];
+$pr_des=$parr1['description'];
+$pr_spec=$parr1['specification'];
+$pr_intro=$parr1['introduction'];
+$pr_price=$parr1['price'];
+$pr_mrp=$parr1['mrp'];
+$pr_cat=$parr1['c_name'];
+$pr_wgt=$parr1['weight'];
+
+
+?>
 <!DOCTYPE html>
 <html class="no-js" lang="en">
 
@@ -5,7 +21,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta http-equiv="x-ua-compatible" content="ie=edge">
-<title>Product Layout Style2 &ndash; Belle Multipurpose Bootstrap 4 Template</title>
+<title><?php echo $pr_title; ?></title>
 <meta name="description" content="description">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <!-- Favicon -->
@@ -560,10 +576,20 @@
                                     </div>
                                     <div class="product-thumb product-thumb-1">
                                         <div id="gallery" class="product-dec-slider-1 product-tab-left">
-                                            <a data-image="assets/images/product-detail-page/cape-dress-1.jpg" data-zoom-image="assets/images/product-detail-page/cape-dress-1.jpg" class="slick-slide slick-cloned" data-slick-index="-4" aria-hidden="true" tabindex="-1">
-                                                <img class="blur-up lazyload" src="assets/images/product-detail-page/cape-dress-1.jpg" alt="" />
-                                            </a>
-                                            <a data-image="assets/images/product-detail-page/cape-dress-2.jpg" data-zoom-image="assets/images/product-detail-page/cape-dress-2.jpg" class="slick-slide slick-cloned" data-slick-index="-3" aria-hidden="true" tabindex="-1">
+                                            <?php 
+                                            $pquery2=mysqli_query($conn,"select * from product_images pi where pi.product_id=1");
+                                            while( $parr2=mysqli_fetch_assoc($pquery2)){
+                                                $pr_img=$parr2['img_path'];
+                                                ?>
+                                                <a data-image="<?php echo $pr_img; ?>" data-zoom-image="<?php echo $pr_img; ?>" class="slick-slide slick-cloned" data-slick-index="-4" aria-hidden="true" tabindex="-1">
+                                                <img class="blur-up lazyload" src="<?php echo $pr_img; ?>" alt="" />
+                                                </a>
+                                                <?php 
+                                            }
+                                            ?>
+                                            
+                                            
+                                            <!-- <a data-image="assets/images/product-detail-page/cape-dress-2.jpg" data-zoom-image="assets/images/product-detail-page/cape-dress-2.jpg" class="slick-slide slick-cloned" data-slick-index="-3" aria-hidden="true" tabindex="-1">
                                                 <img class="blur-up lazyload" src="assets/images/product-detail-page/cape-dress-2.jpg" alt="" />
                                             </a>
                                             <a data-image="assets/images/product-detail-page/cape-dress-3.jpg" data-zoom-image="assets/images/product-detail-page/cape-dress-3.jpg" class="slick-slide slick-cloned" data-slick-index="-2" aria-hidden="true" tabindex="-1">
@@ -583,7 +609,7 @@
                                             </a>
                                             <a data-image="assets/images/product-detail-page/cape-dress-8.jpg" data-zoom-image="assets/images/product-detail-page/cape-dress-8.jpg" class="slick-slide slick-cloned" data-slick-index="3" aria-hidden="true" tabindex="-1">
                                                 <img class="blur-up lazyload" src="assets/images/product-detail-page/cape-dress-8.jpg" alt="" />
-                                            </a>
+                                            </a> -->
                                         </div>
                                     </div>
                                     <div class="lightboximages">
@@ -602,7 +628,7 @@
         
                                 </div>
                                 <!--Product Feature-->
-                                <div class="prFeatures">
+                                <!-- <div class="prFeatures">
                                     <div class="row">
                                         <div class="col-12 col-sm-12 col-md-12 col-lg-6 feature">
                                             <img src="assets/images/credit-card.png" alt="Safe Payment" title="Safe Payment" />
@@ -621,38 +647,38 @@
                                             <div class="details"><h3>Hotline</h3>Talk to help line for your question on 4141 456 789, 4125 666 888</div>
                                         </div>
                                     </div>
-                                </div>
+                                </div> -->
                                 <!--End Product Feature-->
                             </div>
                             <div class="col-lg-6 col-md-6 col-sm-12 col-12">
                                 <div class="product-single__meta">
-                                    <h1 class="product-single__title">Product Layout Style2</h1>
+                                    <h1 class="product-single__title"><?php echo $pr_title; ?></h1>
                                     <div class="product-nav clearfix">					
                                         <a href="#" class="next" title="Next"><i class="fa fa-angle-right" aria-hidden="true"></i></a>
                                     </div>
                                     <div class="prInfoRow">
                                         <div class="product-stock"> <span class="instock ">In Stock</span> <span class="outstock hide">Unavailable</span> </div>
-                                        <div class="product-sku">SKU: <span class="variant-sku">19115-rdxs</span></div>
+                                        <!-- <div class="product-sku">SKU: <span class="variant-sku">19115-rdxs</span></div>
                                         <div class="product-review"><a class="reviewLink" href="#tab2"><i class="font-13 fa fa-star"></i><i class="font-13 fa fa-star"></i><i class="font-13 fa fa-star"></i><i class="font-13 fa fa-star-o"></i><i class="font-13 fa fa-star-o"></i><span class="spr-badge-caption">6 reviews</span></a></div>
-                                    </div>
+                                        --></div> 
                                     <p class="product-single__price product-single__price-product-template">
                                         <span class="visually-hidden">Regular price</span>
-                                        <s id="ComparePrice-product-template"><span class="money">$900.00</span></s>
+                                        <s id="ComparePrice-product-template"><span class="money">$<?php echo $pr_mrp; ?></span></s>
                                         <span class="product-price__price product-price__price-product-template product-price__sale product-price__sale--single">
-                                            <span id="ProductPrice-product-template"><span class="money">$788.00</span></span>
+                                            <span id="ProductPrice-product-template"><span class="money">$<?php echo $pr_price; ?></span></span>
                                         </span>
                                         <span class="discount-badge"> <span class="devider">|</span>&nbsp;
                                             <span>You Save</span>
                                             <span id="SaveAmount-product-template" class="product-single__save-amount">
-                                            <span class="money">$100.00</span>
+                                            <span class="money">$<?php echo $pr_mrp-$pr_price; ?></span>
                                             </span>
-                                            <span class="off">(<span>16</span>%)</span>
+                                            <span class="off">(<span><?php echo ($pr_mrp-$pr_price)*100/$pr_mrp; ?></span>%)</span>
                                         </span>  
                                     </p>
                                 <div class="product-single__description rte">
-                                    <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.</p>
+                                    <p><?php echo $pr_intro; ?></p>
                                 </div>
-                                <form method="post" action="http://annimexweb.com/cart/add" id="product_form_10508262282" accept-charset="UTF-8" class="product-form product-form-product-template hidedropdown" enctype="multipart/form-data">
+                                <!-- <form method="post" action="http://annimexweb.com/cart/add" id="product_form_10508262282" accept-charset="UTF-8" class="product-form product-form-product-template hidedropdown" enctype="multipart/form-data">
                                     <div class="swatch clearfix swatch-0 option1" data-option-index="0">
                                         <div class="product-form__item">
                                           <label class="header">Color: <span class="slVariant">Red</span></label>
@@ -669,8 +695,8 @@
                                             <input class="swatchInput" id="swatch-0-dark-green" type="radio" name="option-0" value="Dark Green"><label class="swatchLbl color small" for="swatch-0-dark-green" style="background-color:darkgreen;" title="Dark Green"></label>
                                           </div>
                                         </div>
-                                    </div>
-                                    <div class="swatch clearfix swatch-1 option2" data-option-index="1">
+                                    </div> -->
+                                    <!-- <div class="swatch clearfix swatch-1 option2" data-option-index="1">
                                         <div class="product-form__item">
                                           <label class="header">Size: <span class="slVariant">XS</span></label>
                                           <div data-value="X-Small" class="swatch-element x-small available">
@@ -679,7 +705,7 @@
                                         </div>
                                     </div>
                                     <p class="infolinks"><a href="#sizechart" class="sizelink btn"> Size Guide</a> <a href="#productInquiry" class="emaillink btn"> Ask About this Product</a></p>
-                                    <!-- Product Action -->
+                                    Product Action -->
                                     <div class="product-action clearfix">
                                         <div class="product-form__item--quantity">
                                             <div class="wrapQtyBtn">
@@ -691,7 +717,7 @@
                                             </div>
                                         </div>                                
                                         <div class="product-form__item--submit">
-                                            <button type="button" name="add" class="btn product-form__cart-submit">
+                                            <button type="button" name="add" class="btn product-form__cart-submit" onclick="add_cart(<?php echo $pr_id; ?>)">
                                                 <span>Add to cart</span>
                                             </button>
                                         </div>
@@ -699,11 +725,11 @@
                                     <!-- End Product Action -->
                                 </form>
                                 <div class="display-table shareRow">
-                                        <div class="display-table-cell medium-up--one-third">
+                                        <!-- <div class="display-table-cell medium-up--one-third">
                                             <div class="wishlist-btn">
                                                 <a class="wishlist add-to-wishlist" href="#" title="Add to Wishlist"><i class="icon anm anm-heart-l" aria-hidden="true"></i> <span>Add to Wishlist</span></a>
                                             </div>
-                                        </div>
+                                        </div> -->
                                         <div class="display-table-cell text-right">
                                             <div class="social-sharing">
                                                 <a target="_blank" href="#" class="btn btn--small btn--secondary btn--share share-facebook" title="Share on Facebook">
@@ -731,32 +757,17 @@
                                     	<h3 class="acor-ttl active" rel="tab1">Product Details</h3>
                                         <div id="tab1" class="tab-content">
                                             <div class="product-description rte">
-                                                <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.</p>
-                                                <ul>
-                                                  <li>Lorem ipsum dolor sit amet, consectetur adipiscing elit</li>
-                                                  <li>Sed ut perspiciatis unde omnis iste natus error sit</li>
-                                                  <li>Neque porro quisquam est qui dolorem ipsum quia dolor</li>
-                                                  <li>Lorem Ipsum is not simply random text.</li>
-                                                  <li>Free theme updates</li>
-                                                </ul>
-                                                <h3>Sed ut perspiciatis unde omnis iste natus error sit voluptatem</h3>
-                                                <p>You can change the position of any sections such as slider, banner, products, collection and so on by just dragging and dropping.&nbsp;</p>
-                                                <h3>Lorem Ipsum is not simply random text.</h3>
-<p>But I must explain to you how all this mistaken idea of denouncing pleasure and praising pain was born and I will give you a complete account of the system, and expound the actual teachings of the great explorer of the truth, the master-builder of human happiness.</p>
-                                                <p>Change colors, fonts, banners, megamenus and more. Preview changes are live before saving them.</p>
-                                                <h3>1914 translation by H. Rackham</h3>
-                                                <p>But I must explain to you how all this mistaken idea of denouncing pleasure and praising pain was born and I will give you a complete account of the system, and expound the actual teachings of the great explorer of the truth, the master-builder of human happiness.</p>
-                                                <h3>Section 1.10.33 of "de Finibus Bonorum et Malorum", written by Cicero in 45 BC</h3>
-                                                <p>At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia animi, id est laborum et dolorum fuga.</p>
-                                                <h3>The standard Lorem Ipsum passage, used since the 1500s</h3>
-                                                <p>You can use variant style from colors, images or variant images. Also available differnt type of design styles and size.</p>
-                                                <h3>Lorem Ipsum is not simply random text.</h3>
-<p>But I must explain to you how all this mistaken idea of denouncing pleasure and praising pain was born and I will give you a complete account of the system, and expound the actual teachings of the great explorer of the truth, the master-builder of human happiness.</p>
-                                                <h3>Proin ut lacus eget elit molestie posuere.</h3>
-                                                <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled.</p>
-                                            </div>
+                                                <?php echo $pr_des; ?>
+                                               </div> 
                                         </div>
-                                        <h3 class="acor-ttl" rel="tab2">Product Reviews</h3>
+                                        <h3 class="acor-ttl" rel="tab2">Specifications</h3>
+                                        <div id="tab2" class="tab-content">
+                                            <div class="product-description rte">
+                                                <?php echo $pr_spec; ?>
+                                                
+                                        </div>
+                                            </div>
+                                        <!-- <h3 class="acor-ttl" rel="tab2">Product Reviews</h3> 
                                         <div id="tab2" class="tab-content">
                                             <div id="shopify-product-reviews">
                                                 <div class="spr-container">
@@ -806,7 +817,7 @@
                                                                     <input type="submit" class="spr-button spr-button-primary button button-primary btn btn-primary" value="Submit Review">
                                                                 </fieldset>
                                                             </form>
-                                                        </div>
+                                                        </div> 
                                                         <div class="spr-reviews">
                                                             <div class="spr-review">
                                                                 <div class="spr-review-header">
@@ -842,13 +853,13 @@
                                                                 <p class="spr-review-content-body">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled.<br>
                                                                 <br>Lorem Ipsum is simply dummy text of the printing and typesetting industry.</p>
                                                               </div>
-                                                            </div>
+                                                            </div> 
                                                         </div>
-                                                    </div>
-                                                    </div>
-                                                </div>
+                                                    </div>-->
+                                                    <!-- </div>
+                                                </div> -->
                                             </div>
-                                        <h3 class="acor-ttl" rel="tab3">Size Chart</h3>
+                                        <!-- <h3 class="acor-ttl" rel="tab3">Size Chart</h3>
                                         <div id="tab3" class="tab-content">
                                             <h3>WOMEN'S BODY SIZING CHART</h3>
                                             <table>
@@ -947,15 +958,15 @@
                                             <div class="text-center">
                                                 <img src="assets/images/size.jpg" alt="" />
                                             </div>
-                                      </div>
-                                        <h3 class="acor-ttl" rel="tab4">Shipping &amp; Returns</h3>
+                                      </div>  -->
+                                         <!-- <h3 class="acor-ttl" rel="tab4">Shipping &amp; Returns</h3>
                                         <div id="tab4" class="tab-content">
                                             <h4>Returns Policy</h4>
                                             <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce eros justo, accumsan non dui sit amet. Phasellus semper volutpat mi sed imperdiet. Ut odio lectus, vulputate non ex non, mattis sollicitudin purus. Mauris consequat justo a enim interdum, in consequat dolor accumsan. Nulla iaculis diam purus, ut vehicula leo efficitur at.</p>
                                             <p>Interdum et malesuada fames ac ante ipsum primis in faucibus. In blandit nunc enim, sit amet pharetra erat aliquet ac.</p>
                                             <h4>Shipping</h4>
                                             <p>Pellentesque ultrices ut sem sit amet lacinia. Sed nisi dui, ultrices ut turpis pulvinar. Sed fringilla ex eget lorem consectetur, consectetur blandit lacus varius. Duis vel scelerisque elit, et vestibulum metus.  Integer sit amet tincidunt tortor. Ut lacinia ullamcorper massa, a fermentum arcu vehicula ut. Ut efficitur faucibus dui Nullam tristique dolor eget turpis consequat varius. Quisque a interdum augue. Nam ut nibh mauris.</p>
-                                        </div>
+                                        </div> -->
                                     </div>
                                 </div>
                                 <!--End Product Tabs-->
@@ -1962,6 +1973,22 @@
             <div class="pswp__scroll-wrap"><div class="pswp__container"><div class="pswp__item"></div><div class="pswp__item"></div><div class="pswp__item"></div></div><div class="pswp__ui pswp__ui--hidden"><div class="pswp__top-bar"><div class="pswp__counter"></div><button class="pswp__button pswp__button--close" title="Close (Esc)"></button><button class="pswp__button pswp__button--share" title="Share"></button><button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button><button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button><div class="pswp__preloader"><div class="pswp__preloader__icn"><div class="pswp__preloader__cut"><div class="pswp__preloader__donut"></div></div></div></div></div><div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap"><div class="pswp__share-tooltip"></div></div><button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)"></button><button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)"></button><div class="pswp__caption"><div class="pswp__caption__center"></div></div></div></div></div>
 
 </body>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script>
 
+function add_cart(item_id){  
+    alert('Added to cart');
+    axios.post('./controller/cart.php', {
+    item_id,
+    qty:2,
+    function:'addItemToCart'
+  }).then(res => {
+      alert(res.data);
+      alert('Successful');
+  }).catch(err => {
+    alert(err.response.data);
+  })
+}
+</script>
 <!-- belle/product-layout-2.html   11 Nov 2019 12:42:40 GMT -->
 </html>
