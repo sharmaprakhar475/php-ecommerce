@@ -1,5 +1,6 @@
 <?php
 include 'conn.php';
+include 'constants.php';
 if(!isset($_SESSION['cart_items']) || !isset($_SESSION['user_id']))
 {
     exit();
@@ -7,7 +8,7 @@ if(!isset($_SESSION['cart_items']) || !isset($_SESSION['user_id']))
 $admin_query=mysqli_query($conn,"select * from admin_settings ");
 $admin_arr=mysqli_fetch_assoc($admin_query);
 $admin_site_title=$admin_arr['site_title'];
-$admin_logo_url=$admin_arr['logo_url'];
+$admin_logo_url=$base_url.$admin_arr['logo_url'];
 ?>
 
 <!DOCTYPE html>
@@ -45,6 +46,12 @@ $admin_logo_url=$admin_arr['logo_url'];
         
         <div class="container">
         	<div class="row">
+                <?php
+                    $user_id=$_SESSION['user_id'];
+                    $user_name=$_SESSION['name'];
+                    $orquery=mysqli_query($conn,"select * from orders o where o.created_by=$user_id");
+                    if($oarr=mysqli_fetch_assoc($orquery)){
+                ?>
                 <div class="col-12 col-sm-12 main-col">
                 	<form action="#" method="post" class="cart style2">
                 		<table>
@@ -112,7 +119,7 @@ $admin_logo_url=$admin_arr['logo_url'];
                                         <?php echo $or_payment_method; ?>
                                     </td>
                                     <td class="text-center">
-                                        <?php echo $or_amount; ?>
+                                        <?php echo "₹".$or_amount; ?>
                                     </td>
                                     <td class="text-center">
                                         <?php echo $or_total_qty; ?>
@@ -150,7 +157,9 @@ $admin_logo_url=$admin_arr['logo_url'];
                     
                     </form>                   
                	</div>
-               
+              <?php }else{?>
+                <a style="margin:0 auto" class="text-center" href="products.php?search=">No orders found. Please place an order now !</a>
+              <?php }?> 
         </div>
         
     </div>

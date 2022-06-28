@@ -2,10 +2,11 @@
 <html class="no-js" lang="en">
 <?php
     include "./conn.php";
+    include "./constants.php";
     $admin_query=mysqli_query($conn,"select * from admin_settings ");
     $admin_arr=mysqli_fetch_assoc($admin_query);
     $admin_site_title=$admin_arr['site_title'];
-    $admin_logo_url=$admin_arr['logo_url'];
+    $admin_logo_url=$base_url.$admin_arr['logo_url'];
 ?>
 <!-- belle/login.html   11 Nov 2019 12:22:27 GMT -->
 <head>
@@ -51,19 +52,19 @@
                             <div class="col-12 col-sm-12 col-md-12 col-lg-12">
                                 <div class="form-group">
                                     <label for="email">Email</label>
-                                    <input type="email" name="email" placeholder="" id="email" class="" autocorrect="off" autocapitalize="off" autofocus="">
+                                    <input type="email" name="email" maxlength="100" placeholder="" onkeypress="checkEnterClick(event)" id="email" class="" autocorrect="off" autocapitalize="off" autofocus="">
                                 </div>
                             </div>
                             <div class="col-12 col-sm-12 col-md-12 col-lg-12">
                                 <div class="form-group">
                                     <label for="password">Password</label>
-                                    <input type="password" value="" name="password" placeholder="" id="password" class="">                        	
+                                    <input type="password" value="" name="password" maxlength="20" placeholder="" onkeypress="checkEnterClick(event)" id="password" class="">                        	
                                 </div>
                             </div>
                           </div>
                           <div class="row">
                             <div class="text-center col-12 col-sm-12 col-md-12 col-lg-12">
-                                <button type="button" class="btn mb-3" onclick="login()">Sign In</button>
+                                <button type="button" class="btn mb-3" onclick="login()" >Sign In</button>
                                 <p class="mb-4">
 									<a href="#" id="RecoverPassword">Forgot your password?</a> &nbsp; | &nbsp;
 								    <a href="register.php" id="customer_register_link">Create account</a>
@@ -95,12 +96,19 @@
             res_data=res.data
             // Create an instance of Notyf
             alertMsg(res_data['msg'],res_data['error']);
-            setTimeout(() => {
-                window.location="./product-layout-2.php?id=2";
-            }, 2000);
+            if(!res_data['error']){
+                setTimeout(() => {
+                    window.location="./index.php";
+                }, 2000);
+            }
         }).catch(err => {
             alert(err.response.data);
         })
+    }
+    function checkEnterClick(e){
+        if(e.keyCode == 13){
+            login();
+        }
     }
     </script>
     <?php include './include/footer.php' ; ?>

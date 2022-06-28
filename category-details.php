@@ -1,7 +1,8 @@
-<?php include './conn.php';?>
 <!DOCTYPE html>
 <html class="no-js" lang="en">
 <?php 
+include './conn.php';
+include './constants.php';
 $id=$_GET['id'];
 $cquery=mysqli_query($conn,"select * from category c where c.id='".$id."' limit 1");
 $carr=mysqli_fetch_assoc($cquery);
@@ -11,7 +12,7 @@ $c_des=$carr['description'];
 $admin_query=mysqli_query($conn,"select * from admin_settings ");
 $admin_arr=mysqli_fetch_assoc($admin_query);
 $admin_site_title=$admin_arr['site_title'];
-$admin_logo_url=$admin_arr['logo_url'];
+$admin_logo_url=$base_url.$admin_arr['logo_url'];
 ?>
 <!-- belle/home14-bags.html   11 Nov 2019 12:35:19 GMT -->
 <head>
@@ -40,6 +41,7 @@ $admin_logo_url=$admin_arr['logo_url'];
     <!--Body Content-->
     <div id="page-content">
     	<!--Image Banners-->
+        <?php if($c_banner_url!=""){ ?>
     	<div class="section imgBanners">
         	<div class="imgBnrOuter">
             	<div class="container">
@@ -47,7 +49,7 @@ $admin_logo_url=$admin_arr['logo_url'];
                     	<div class="col-12 col-sm-12 col-md-12 col-lg-12">
                         	<div class="inner">
                             	<a href="#">	
-                               		<img data-src="<?php echo $c_banner_url; ?>" src="<?php echo $c_banner_url; ?>" alt="<?php echo $c_name; ?>" title="" class="blur-up lazyload" />
+                               		<img data-src="<?php echo $base_url.$c_banner_url; ?>" src="<?php echo $c_banner_url; ?>" alt="<?php echo $c_name; ?>" title="" class="blur-up lazyload" />
                                 </a>
                              </div>
                              <!-- <div class="custom-text text-center">
@@ -63,13 +65,18 @@ $admin_logo_url=$admin_arr['logo_url'];
                 </div>
             </div>
         </div>
+        <?php }?>
         <!--End Image Banners-->
         <div class="section">
         	<div class="container section-header">
-                <h2 class="h2 text-center">Description</h2>
+                <h2 class="h2 "><?php echo $c_name;?></h2>
                 <p><?php echo $c_des; ?></p>
             </div>
         </div>
+        <?php 
+            $chquery1=mysqli_query($conn,"select * from category where parent_id='".$id."'");
+            if(mysqli_num_rows($chquery1)>0){
+        ?>
         <div class="section">
         	<div class="container">
 
@@ -77,10 +84,7 @@ $admin_logo_url=$admin_arr['logo_url'];
 
                 	<div class="col-12 col-sm-12 col-md-12 col-lg-12">
                         <div class="section-header text-center">
-                            <?php 
-                                $chquery1=mysqli_query($conn,"select * from category where parent_id='".$id."'");
-                                if(mysqli_num_rows($chquery1)>0){
-                            ?>
+                            
                             <h2 class="h2">Sub Categories</h2>
                         </div>
                         <div class="container collection-box">
@@ -90,15 +94,17 @@ $admin_logo_url=$admin_arr['logo_url'];
                                     while($carr1=mysqli_fetch_assoc($cquery1)){
                                         $c_id=$carr1['id'];
                                         $c_name=$carr1['name'];
-                                        $c_img=$carr1['img_path'];
+                                        $c_img=$base_url.$carr1['img_path'];
                                         $c_des=$carr1['description']; 
                                 ?>
                                 <div class="col-6 col-sm-6 col-md-3 col-lg-3">
                                     <div class="colletion-item">
                                         <a href="<?php echo "./category-details.php?id=$c_id"; ?>">
-                                            <img class="blur-up lazyload" data-src="<?php echo $c_img; ?>" src="<?php echo $c_img; ?>" alt="image" title="">
-                                            <span class="title"><span><?php echo $c_name; ?></span></span>
+                                            <img class="blur-up lazyload" style="border:#e7e7e7; border-width:5px; border-style:solid;" data-src="<?php echo $c_img; ?>" src="<?php echo $c_img; ?>" alt="image" title="">
                                         </a>
+                                    </div><br><br>
+                                    <div>
+                                        <span class="title" style="margin:auto auto;background-color:#e7e7e7;padding-top:7px;padding-bottom:7px;width:100px;"><?php echo $c_name; ?></span>
                                     </div>
                                 </div>
                                 <?php
@@ -106,29 +112,31 @@ $admin_logo_url=$admin_arr['logo_url'];
                                 ?>
                             </div>
                         </div>
-                        <?php }?>
+                        
                     </div>
                 </div>
             </div>
         </div>
+        <?php }?>
         <?php 
             $cquery=mysqli_query($conn,"select * from category c where c.id='".$id."' limit 1");
             $carr=mysqli_fetch_assoc($cquery);
             $c_name=$carr['name'];
-            $c_banner_url=$carr['banner_url'];        
+            $c_banner_url=$base_url.$carr['banner_url'];        
         ?>
         <!--Bestselling Bags-->
+        <?php 
+            $pquery1=mysqli_query($conn,"select * from product p where p.category_id='".$id."' limit 12");
+            if($parr1=mysqli_fetch_assoc($pquery1)){
+        ?>
         <div class="section">
         	<div class="container">
-
-            	<div class="row">
-
+                <div class="row">
                 	<div class="col-12 col-sm-12 col-md-12 col-lg-12">
-                        <div class="section-header text-center">
-                       
-                            <h2 class="h2"><?php echo $c_name; ?></h2>
+                        <div class="section-header text-left">
+                            <h2 class="h2">Products</h2>
                         </div>
-						<div class="productSlider grid-products grid-products-hover-btn">
+						<div class="productSlider grid-products grid-products-hover-btn" >
                         <?php
                         $pquery1=mysqli_query($conn,"select * from product p where p.category_id='".$id."' limit 12");
                         $pquery2=mysqli_query($conn,"select * from product p join product_images pi on p.id=pi.product_id and p.category_id='".$id."' limit 12 ");
@@ -137,14 +145,14 @@ $admin_logo_url=$admin_arr['logo_url'];
                             $p_id=$parr1['id'];
                             $p_title=$parr1['title'];
                             $p_price=$parr1['price'];
-                            $p_img=$parr2['img_path'];
+                            $p_img=$base_url.$parr2['img_path'];
                         ?>
                             
                             <div class="col-12 item">
                                 <!-- start product image -->
                                 <div class="product-image">
                                     <!-- start product image -->
-                                    <a href="./product-layout-2.php?id=<?php echo $p_id; ?>" class="grid-view-item__link">
+                                    <a href="./product.php?id=<?php echo $p_id; ?>" class="grid-view-item__link">
                                         <!-- image -->
                                         <img class="primary blur-up lazyload" data-src="<?php echo $p_img ;?>" src="<?php echo $p_img ;?>" alt="<?php echo $p_title ;?>" title="product">
                                         <!-- End image -->
@@ -155,10 +163,10 @@ $admin_logo_url=$admin_arr['logo_url'];
                                     <!-- end product image -->
 
                                     <!-- Start product button -->
-                                    <form class="variants add" action="#" onclick="window.location.href='cart.php'"method="post">
+                                    <form class="variants add" action="#" onclick="add_cart(<?php echo $p_id; ?> )" method="post">
                                         <button class="btn btn-addto-cart" type="button" tabindex="0">Add To Cart</button>
                                     </form>
-                                    <div class="button-set">
+                                    <!-- <div class="button-set">
                                         <a href="javascript:void(0)" title="Quick View" class="quick-view-popup quick-view" data-toggle="modal" data-target="#content_quickview">
                                             <i class="icon anm anm-search-plus-r"></i>
                                         </a>
@@ -172,7 +180,7 @@ $admin_logo_url=$admin_arr['logo_url'];
                                                 <i class="icon anm anm-random-r"></i>
                                             </a>
                                         </div>
-                                    </div>
+                                    </div> -->
                                     <!-- end product button -->
                                 </div>
                                 <!-- end product image -->
@@ -199,6 +207,9 @@ $admin_logo_url=$admin_arr['logo_url'];
                 </div>
             </div>
         </div>
+        <?php 
+            }
+        ?>   
         <!--End Bestselling Bags-->
         
         <!-- <div class="section video-section">
@@ -428,8 +439,27 @@ $admin_logo_url=$admin_arr['logo_url'];
 		  });
 	</script>
     <!--End For Newsletter Popup-->
+    
 </div>
 </body>
-
+<script>
+    function add_cart(item_id){  
+        axios.post('./controller/cart.php', {
+        item_id,
+        qty:1,
+        function:'addItemToCart'
+        }).then(res => {
+        res_data=res.data;
+        
+        alertMsg(res_data['msg'],res_data['error']);
+        setTimeout(() => {
+            window.location=window.location.href;
+        }, 2000);
+        
+        }).catch(err => {
+        alert(err.response.data);
+        })
+    }
+</script>
 <!-- belle/home14-bags.html   11 Nov 2019 12:37:31 GMT -->
 </html>

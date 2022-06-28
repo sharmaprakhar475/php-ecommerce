@@ -1,9 +1,10 @@
 <?php
 include './conn.php';
+include './constants.php';
 $admin_query=mysqli_query($conn,"select * from admin_settings ");
 $admin_arr=mysqli_fetch_assoc($admin_query);
 $admin_site_title=$admin_arr['site_title'];
-$admin_logo_url=$admin_arr['logo_url'];    
+$admin_logo_url=$base_url.$admin_arr['logo_url'];    
 ?>
 
 <!DOCTYPE html>
@@ -39,9 +40,9 @@ $admin_logo_url=$admin_arr['logo_url'];
     	<div class="slideshow slideshow-wrapper pb-section sliderFull">
         	<div class="home-slideshow">
                 <?php
-                    $hquery1=mysqli_query($conn,"select * from banners ");
+                    $hquery1=mysqli_query($conn,"select * from banners where status=1 ");
                     while($harr1=mysqli_fetch_assoc($hquery1)){
-                    $hp_ban_path=$harr1['banner_path'];
+                    $hp_ban_path=$base_url.$harr1['banner_path'];
                     $hp_title=$harr1['title'];
                     $hp_des=$harr1['description'];
                 ?>
@@ -104,7 +105,7 @@ $admin_logo_url=$admin_arr['logo_url'];
                                             $piquery1=mysqli_query($conn,"select * from product_images where product_id='".$p_id."' limit 1");
                                             $piarr1=mysqli_fetch_assoc($piquery1);
                                             $p_title=$parr1['title'];
-                                            $p_img=$piarr1['img_path'];
+                                            $p_img=$base_url.$piarr1['img_path'];
                                             $p_des=$parr1['description'];
                                             $p_mrp=$parr1['mrp'];
                                             $p_price= $parr1['price'];
@@ -113,7 +114,7 @@ $admin_logo_url=$admin_arr['logo_url'];
                                             <!-- start product image -->
                                             <div class="product-image">
                                                 <!-- start product image -->
-                                                <a href="./product-layout-2.php?id=<?php echo $p_id ;?>">
+                                                <a href="./product.php?id=<?php echo $p_id ;?>">
                                                     <!-- image -->
                                                     <img class=" blur-up lazyload" data-src="<?php echo $p_img; ?>" src="<?php echo $p_img; ?>" alt="<?php echo $p_title; ?>" title="<?php echo $p_title; ?>">
                                                     <!-- End image -->
@@ -133,10 +134,10 @@ $admin_logo_url=$admin_arr['logo_url'];
                                                     <button class="btn btn-addto-cart" type="button" tabindex="0" onclick="add_cart(<?php echo $p_id; ?> )">Add To Cart</button>
                                                 </form>
                                                 <div class="button-set">
-                                                    <a href="javascript:void(0)" title="Quick View" class="quick-view-popup quick-view" data-toggle="modal" data-target="#content_quickview">
+                                                    <!-- <a href="javascript:void()" title="Quick View" class="quick-view-popup quick-view" data-toggle="modal" data-target="#content_quickview">
                                                         <i class="icon anm anm-search-plus-r"></i>
-                                                    </a>
-                                                    <div class="wishlist-btn">
+                                                    </a> -->
+                                                    <!-- <div class="wishlist-btn">
                                                         <a class="wishlist add-to-wishlist" href="wishlist.html">
                                                             <i class="icon anm anm-heart-l"></i>
                                                         </a>
@@ -145,7 +146,7 @@ $admin_logo_url=$admin_arr['logo_url'];
                                                         <a class="compare add-to-compare" href="compare.html" title="Add to Compare">
                                                             <i class="icon anm anm-random-r"></i>
                                                         </a>
-                                                    </div>
+                                                    </div> -->
                                                 </div>
                                                 <!-- end product button -->
                                             </div>
@@ -154,7 +155,7 @@ $admin_logo_url=$admin_arr['logo_url'];
                                             <div class="product-details text-center">
                                                 <!-- product name -->
                                                 <div class="product-name">
-                                                    <a href="./product-layout-2.php?id=<?php echo $p_id; ?>"><?php echo $p_title?></a>
+                                                    <a href="./product.php?id=<?php echo $p_id; ?>"><?php echo $p_title?></a>
                                                 </div>
                                                 <!-- End product name -->
                                                 <!-- product price -->
@@ -181,35 +182,42 @@ $admin_logo_url=$admin_arr['logo_url'];
         <!--Collection Tab slider-->
         
         <!--Collection Box slider-->
-        <div class="collection-box section">
-        	<div class="container-fluid">
-				<div class="collection-grid">
-                    <?php
-                        $cquery1=mysqli_query($conn,"select * from category limit 5 ");
-                        while($carr1=mysqli_fetch_assoc($cquery1)){
-                        $c_id=$carr1['id'];
-                        $c_name=$carr1['name'];
-                        $c_img=$carr1['img_path'];
-                        $c_des=$carr1['description']; 
-                    ?>
-                    <div class="collection-grid-item">
-                        <a href="<?php echo "./category-details.php?id=$c_id"; ?>" class="collection-grid-item__link">
-                            <img data-src="<?php echo $c_img; ?>" src="<?php echo $c_img; ?>" alt="Fashion" class="blur-up lazyload"/>
-                            <div class="collection-grid-item__title-wrapper">
-                                <h3 class="collection-grid-item__title btn btn--secondary no-border"><?php echo $c_name; ?></h3>
-                            </div>
-                        </a>
-                    </div>
-                    <?php
-                        }
-                    ?>
+        <div class="container collection-box">
+            <div class="section-header text-center">
+                <h2 class="h2">Top Categories</h2>
+                <p>Browse the huge variety of our products</p>
+            </div>
+        	<div class="row">
+                <?php
+                    $cquery1=mysqli_query($conn,"select * from category where parent_id=0 limit 4");
+                    while($carr1=mysqli_fetch_assoc($cquery1)){
+                    $c_id=$carr1['id'];
+                    $c_name=$carr1['name'];
+                    $c_img=$base_url.$carr1['img_path'];
+                    $c_des=$carr1['description']; 
+                ?>
+                <div class="col-6 col-sm-6 col-md-3 col-lg-3">
+                <div class="colletion-item" >
+                    <a href="<?php echo "./category-details.php?id=$c_id"; ?>">
+                        <img class="" style="border:#e7e7e7; border-width:5px; border-style:solid;" data-src="<?php echo $c_img; ?>" src="<?php echo $c_img; ?>" alt="image" title="">
+                    </a>
                 </div>
+                <br><br>
+                <div>
+                    <a href="<?php echo "./category-details.php?id=$c_id"; ?>">
+                        <span class="title" style="margin:auto auto;background-color:#e7e7e7;padding-top:7px;padding-bottom:7px;width:140px;"><?php echo $c_name; ?></span>
+                    </a>    
+                </div>
+                </div>
+                <?php
+                    }
+                ?>
             </div>
         </div>
         <!--End Collection Box slider-->
         
         <!--Logo Slider-->
-        <div class="section logo-section">
+        <!-- <div class="section logo-section">
         	<div class="container">
             	<div class="row">
                 	<div class="col-12 col-sm-12 col-md-12 col-lg-12">
@@ -236,7 +244,7 @@ $admin_logo_url=$admin_arr['logo_url'];
                 	</div>
                 </div>
             </div>
-        </div>
+        </div> -->
         <!--End Logo Slider-->
         
         <!--Featured Product-->
@@ -259,7 +267,7 @@ $admin_logo_url=$admin_arr['logo_url'];
                             $fiquery1=mysqli_query($conn,"select * from product_images where product_id='".$f_id."' limit 1");
                             $fiarr1=mysqli_fetch_assoc($fiquery1);
                             $f_title=$farr1['title'];
-                            $f_img=$fiarr1['img_path'];
+                            $f_img=$base_url.$fiarr1['img_path'];
                             $f_des=$farr1['description'];
                             $f_mrp=$farr1['mrp'];
                             $f_price=$farr1['price'];
@@ -267,7 +275,7 @@ $admin_logo_url=$admin_arr['logo_url'];
                         <div class="col-6 col-sm-6 col-md-4 col-lg-4 item grid-view-item style2">
                         	<div class="grid-view_image">
                                 <!-- start product image -->
-                                <a href="./product-layout-2.php?id=<?php echo $f_id; ?>" class="grid-view-item__link">
+                                <a href="./product.php?id=<?php echo $f_id; ?>" class="grid-view-item__link">
                                     <!-- image -->
                                     <img class="grid-view-item__image primary blur-up lazyload" data-src="<?php echo $f_img; ?>" src="<?php echo $f_img; ?>" alt="<?php echo $f_title; ?>" title="<?php echo $f_title; ?>">
                                     <!-- End image -->
@@ -280,26 +288,26 @@ $admin_logo_url=$admin_arr['logo_url'];
                                 <div class="product-details hoverDetails text-center mobile">
                                     <!-- product name -->
                                     <div class="product-name">
-                                        <a href="./product-layout-2.php?id=<?php echo $f_id; ?>"><?php echo $f_title; ?></a>
+                                        <a href="./product.php?id=<?php echo $f_id; ?>"><?php echo $f_title; ?></a>
                                     </div>
                                     <!-- End product name -->
                                     <!-- product price -->
                                     <div class="product-price">
-                                        <span class="old-price"><?php echo $f_mrp; ?></span>
-                                        <span class="price"><?php echo $f_price; ?></span>
+                                        <span class="old-price"><?php echo "₹".$f_mrp; ?></span>
+                                        <span class="price"><?php echo "₹".$f_price; ?></span>
                                     </div>
                                     <!-- End product price -->
                                     
                                     <!-- product button -->
                                     <div class="button-set">
-                                        <a href="javascript:void(0)" title="Quick View" class="quick-view-popup quick-view" data-toggle="modal" data-target="#content_quickview">
+                                        <!-- <a href="javascript:void(0)" title="Quick View" class="quick-view-popup quick-view" data-toggle="modal" data-target="#content_quickview">
                                             <i class="icon anm anm-search-plus-r"></i>
-                                        </a>
+                                        </a> -->
                                         <!-- Start product button -->
-                                        <form class="variants add" action="" onclick="window.location.href='cart.php'"method="">
+                                        <form class="variants add" action="" onclick="add_cart(<?php echo $f_id; ?> )"method="">
                                             <button class="btn cartIcon btn-addto-cart" type="button" tabindex="0"><i class="icon anm anm-bag-l"></i></button>
                                         </form>
-                                        <div class="wishlist-btn">
+                                        <!-- <div class="wishlist-btn">
                                             <a class="wishlist add-to-wishlist" href="wishlist.html">
                                                 <i class="icon anm anm-heart-l"></i>
                                             </a>
@@ -308,7 +316,7 @@ $admin_logo_url=$admin_arr['logo_url'];
                                             <a class="compare add-to-compare" href="compare.html" title="Add to Compare">
                                                 <i class="icon anm anm-random-r"></i>
                                             </a>
-                                        </div>
+                                        </div> -->
                                     </div>
                                     <!-- end product button -->
                                 </div>

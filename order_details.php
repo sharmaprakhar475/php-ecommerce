@@ -1,5 +1,6 @@
 <?php
     include 'conn.php';
+    include 'constants.php';
     if(!isset($_SESSION['cart_items'])&& !isset($_SESSION['user_id']))
     {
         exit();
@@ -8,7 +9,7 @@
     $admin_query=mysqli_query($conn,"select * from admin_settings ");
     $admin_arr=mysqli_fetch_assoc($admin_query);
     $admin_site_title=$admin_arr['site_title'];
-    $admin_logo_url=$admin_arr['logo_url'];
+    $admin_logo_url=$base_url.$admin_arr['logo_url'];
 ?>
 
 <!DOCTYPE html>
@@ -152,7 +153,7 @@
                                     $ord_mrp=$ordarr1['mrp'];
                                     $ord_wgt=$ordarr1['weight'];
                                     $ord_qty=$ordarr['qty'];
-                                    $ord_img=$ordarr_img['img_path'];
+                                    $ord_img=$base_url.$ordarr_img['img_path'];
                                 ?>
 
                                 <tr class="cart__row border-bottom line1 cart-flex border-top">

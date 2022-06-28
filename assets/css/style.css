@@ -384,10 +384,10 @@ input:-ms-input-placeholder, textarea:-ms-input-placeholder { opacity:1; -ms-fil
 /*======================================================================
   11. Section
 ========================================================================*/
-.section { padding-top:35px; padding-bottom:35px; }
-.section-header { margin-bottom:35px; }
-.pb-section { padding-bottom:35px; }
-.pt-section { padding-top:35px; }
+.section { padding-top:5px; padding-bottom:5px; }
+.section-header { margin-bottom:10px; }
+.pb-section { padding-bottom:10px; }
+.pt-section { padding-top:10px; }
 .no-pb-section { padding-bottom:0; }
 
 /*======================================================================
@@ -454,7 +454,7 @@ input:-ms-input-placeholder, textarea:-ms-input-placeholder { opacity:1; -ms-fil
 .slick-prev:before { content:"\ea8b"; }
 .slick-next::before { content:"\ea8c"; }
 .productSlider:hover .slick-arrow, .productPageSlider:hover .slick-arrow, .productSlider-style1:hover .slick-arrow, .productSlider-style2:hover .slick-arrow,
-.productSlider-style2:hover .slick-arrow, .productSlider-fullwidth:hover .slick-arrow { opacity:1; }
+.productSlider-style2:hover .slick-arrow, .productSlider-fullwidth:hover .slick-arrow { opacity:1 ; }
 .grid-products .slick-arrow { margin-top:-50px; }
 .productPageSlider .slick-arrow { margin-top:-40px; }
 .productSlider-style1 .slick-arrow, .productSlider-style2 .slick-prev, .productSlider-fullwidth .slick-prev { margin-top:-10px; }
@@ -1186,7 +1186,7 @@ input.checkbox { height:auto; vertical-align:middle; padding:0; box-shadow:none;
 /*======================================================================
   27. Image Banners
 ========================================================================*/
-.section.imgBanners { padding-top:8px; padding-bottom:20px; }
+.section.imgBanners { padding-top:8px; padding-bottom:5px; }
 .imgBnrOuter .inner img { display:block; width:100%; }
 .imgBnrOuter .inner * { -ms-transition:all 0.4s ease-in-out; -webkit-transition:all 0.4s ease-in-out; transition:all 0.4s ease-in-out; }
 .imgBnrOuter .inner a, .imgBnrOuter .inner a:hover { opacity:1; }

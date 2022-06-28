@@ -16,7 +16,7 @@ function addItemToCart($conn,$item_id,$qty)
             }      
         }
         $_SESSION['cart_items'][]=array("item_id"=>$item_id,"qty"=>$qty);
-        return array("msg"=>"Added", "error"=>false);
+        return array("msg"=>"Item added to cart", "error"=>false);
         
     }
     return array("msg"=>"Oops something went wrong", "error"=>true);

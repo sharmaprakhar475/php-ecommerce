@@ -8,12 +8,13 @@ if(isset($data['function']) && ($data['function']=='userRegister')){
     $mobile=$user['mobile'];
     $email=$user['email'];
     $password=$user['password'];
+    $repassword=$user['repassword'];
     $address1=$user['address1'];
     $address2=$user['address2'];
     $city=$user['city'];
     $state=$user['state'];
     $pincode=$user['pincode'];
-    $res=userRegister($conn,$name,$mobile,$email,$password,$address1,$address2,$city,$state,$pincode);
+    $res=userRegister($conn,$name,$mobile,$email,$password,$repassword,$address1,$address2,$city,$state,$pincode);
     echo json_encode($res);
     exit();
 }
@@ -39,6 +40,17 @@ if(isset($data['function']) && ($data['function']=='requestCall')){
 
 if(isset($data['function']) && ($data['function']=='userLogout')){
     $res=userLogout();
+    echo json_encode($res);
+    exit();
+}
+if(isset($data['function']) && ($data['function']=='subscribe')){
+    $email=$data['email'];
+    $res=subscribe($conn,$email);
+    echo json_encode($res);
+    exit();
+}
+if(isset($data['function']) && ($data['function']=='chatTawk')){
+    $res=chatTawk($conn);
     echo json_encode($res);
     exit();
 }

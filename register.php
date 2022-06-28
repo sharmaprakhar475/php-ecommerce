@@ -1,9 +1,10 @@
 <?php 
     include './conn.php';
+    include './constants.php';
     $admin_query=mysqli_query($conn,"select * from admin_settings ");
     $admin_arr=mysqli_fetch_assoc($admin_query);
     $admin_site_title=$admin_arr['site_title'];
-    $admin_logo_url=$admin_arr['logo_url'];
+    $admin_logo_url=$base_url.$admin_arr['logo_url'];
 ?>
 <!DOCTYPE html>
 <html class="no-js" lang="en">
@@ -12,7 +13,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta http-equiv="x-ua-compatible" content="ie=edge">
-<title><?php $admin_site_title; ?> - Create an Account</title>
+<title><?php echo $admin_site_title; ?> - Create an Account</title>
 <meta name="description" content="description">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <!-- Favicon -->
@@ -47,63 +48,80 @@
                           <div class="row">
 	                          <div class="col-12 col-sm-12 col-md-12 col-lg-12">
                                 <div class="form-group">
-                                    <label for="name">Name</label>
-                                    <input type="text" name="name" placeholder="" id="name" autofocus="">
+                                    <label for="name">Name<span style="color:red;">*</span></label>
+                                    <input type="text" maxlength="100" name="name" placeholder="" onkeypress="checkEnterClick(event)" id="name" autofocus="">
                                 </div>
                                </div>
                                <div class="col-12 col-sm-12 col-md-12 col-lg-12">
                                 <div class="form-group">
-                                    <label for="mobile_number">Mobile Number</label>
-                                    <input type="text" name="mobile_number" placeholder="" id="mobile_number">
+                                    <label for="mobile_number">Mobile Number<span style="color:red;">*</span></label>
+                                    <input type="text" maxlength="10" name="mobile_number" placeholder="" onkeypress="checkEnterClick(event)" id="mobile_number">
                                 </div>
                                </div>
                             <div class="col-12 col-sm-12 col-md-12 col-lg-12">
                                 <div class="form-group">
-                                    <label for="email">Email</label>
-                                    <input type="email" name="email" placeholder="" id="email" class="" autocorrect="off" autocapitalize="off" autofocus="">
+                                    <label for="email">Email<span style="color:red;">*</span></label>
+                                    <input type="email" maxlength="100" name="email" placeholder="" onkeypress="checkEnterClick(event)" id="email" class="" autocorrect="off" autocapitalize="off" autofocus="">
                                 </div>
                             </div>
                             <div class="col-12 col-sm-12 col-md-12 col-lg-12">
                                 <div class="form-group">
-                                    <label for="password">Password</label>
-                                    <input type="password" value="" name="password" placeholder="" id="password" class="">                        	
+                                    <label for="password">Password<span style="color:red;">*</span></label>
+                                    <input type="password" maxlength="20" value="" name="password" onkeypress="checkEnterClick(event)" placeholder="" id="password" class="">                        	
+                                </div>
+                            </div>
+                            <div class="col-12 col-sm-12 col-md-12 col-lg-12">
+                                <div class="form-group">
+                                    <label for="repassword">Retype Password<span style="color:red;">*</span></label>
+                                    <input type="password" maxlength="20"  value="" name="repassword" placeholder="" onkeypress="checkEnterClick(event)" id="repassword" class="">                        	
                                 </div>
                             </div>
                             <div class="col-12 col-sm-12 col-md-12 col-lg-12">
                                 <div class="form-group">
                                     <label for="address_1">Address line 1</label>
-                                    <input type="text" name="address_1" placeholder="" id="address_1">                        	
+                                    <input type="text" name="address_1" placeholder="" onkeypress="checkEnterClick(event)" id="address_1">                        	
                                 </div>
                             </div>
                             <div class="col-12 col-sm-12 col-md-12 col-lg-12">
                                 <div class="form-group">
                                     <label for="address_2">Address line 2</label>
-                                    <input type="text" name="address_2" placeholder="" id="address_2" >                        	
+                                    <input type="text" name="address_2" placeholder="" onkeypress="checkEnterClick(event)" id="address_2" >                        	
                                 </div>
                             </div>
                             <div class="col-12 col-sm-12 col-md-12 col-lg-12">
                                 <div class="form-group">
                                     <label for="city">City</label>
-                                    <input type="text" name="city" placeholder="" id="city">                        	
+                                    <input type="text" name="city" placeholder="" onkeypress="checkEnterClick(event)" id="city">                        	
                                 </div>
                             </div>
                             <div class="col-12 col-sm-12 col-md-12 col-lg-12">
                                 <div class="form-group">
                                     <label for="state">State</label>
-                                    <input type="text" name="state" placeholder="" id="state">                        	
+                                    <select name="state" id="state" onkeypress="checkEnterClick(event)">
+                                        <option value=""> --- Please Select --- </option>
+                                            <?php 
+                                                $indian_states=file_get_contents("IndianStates.json");
+                                                $indian_states=json_decode($indian_states);
+                                                foreach($indian_states as $row){
+                                            ?>
+                                        <option value="<?php echo $row; ?>"><?php echo $row; ?></option>
+                                            <?php
+                                                }
+                                            ?>
+                                    </select>                        	
                                 </div>
                             </div>
                             <div class="col-12 col-sm-12 col-md-12 col-lg-12">
                                 <div class="form-group">
                                     <label for="pincode">Pincode</label>
-                                    <input type="text" name="pincode" placeholder="" id="pincode">                        	
+                                    <input type="text" name="pincode" placeholder=""  onkeypress="checkEnterClick(event)" id="pincode">                        	
                                 </div>
                             </div>
                             
                           </div>
                           <div class="row">
                             <div class="text-center col-12 col-sm-12 col-md-12 col-lg-12">
-                                <button type="button" class="btn mb-3" onclick="register()">Create</button>
+                                <button type="button" class="btn mb-3" onclick="register()" >Create</button>
                             </div>
                          </div>
                      </form>
@@ -126,6 +144,7 @@
             mobile:document.getElementById("mobile_number").value,
             email:document.getElementById("email").value,
             password:document.getElementById("password").value,
+            repassword:document.getElementById("repassword").value,
             address1:document.getElementById("address_1").value,
             address2:document.getElementById("address_2").value,
             city:document.getElementById("city").value,
@@ -138,12 +157,20 @@
         }).then(res => {
             res_data=res.data;
             alertMsg(res_data['msg'],res_data['error']);
-            setTimeout(() => {
-                window.location="./login.php";
-            }, 2000); 
+            if(!res_data['error']){
+                setTimeout(() => {
+                    window.location="./login.php";
+                }, 2000); 
+            }
         }).catch(err => {
             alert(err.response.data);
-    })}
+        })
+    }
+    function checkEnterClick(e){
+        if(e.keyCode == 13){
+            register();
+        }
+    }
     </script>
     <?php include './include/footer.php';?>
     <!--Scoll Top-->

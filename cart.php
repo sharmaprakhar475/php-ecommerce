@@ -1,5 +1,6 @@
 <?php
 include 'conn.php';
+include 'constants.php';
 if(!isset($_SESSION['cart_items']))
 {
     exit();
@@ -20,7 +21,7 @@ $admin_logo_url=$admin_arr['logo_url'];
 <meta name="description" content="description">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <!-- Favicon -->
-<link rel="shortcut icon" href="<?php echo $admin_logo_url; ?>" />
+<link rel="shortcut icon" href="<?php echo $base_url.$admin_logo_url; ?>" />
 <!-- Plugins CSS -->
 <link rel="stylesheet" href="assets/css/plugins.css">
 <!-- Bootstap CSS -->
@@ -72,7 +73,7 @@ $admin_logo_url=$admin_arr['logo_url'];
                                     $pr_price=$parr1['price'];
                                     $pr_mrp=$parr1['mrp'];
                                     $pr_wgt=$parr1['weight'];
-                                    $pr_img=$parr_img['img_path'];
+                                    $pr_img=$base_url.$parr_img['img_path'];
                                 ?>
 
                                 <tr class="cart__row border-bottom line1 cart-flex border-top">
@@ -120,7 +121,7 @@ $admin_logo_url=$admin_arr['logo_url'];
                             </tfoot>
                     </table>
                     
-                    <div class="currencymsg">We processes all orders in USD. While the content of your cart is currently displayed in USD, the checkout will use USD at the most current exchange rate.</div>
+                    <!-- <div class="currencymsg">We processes all orders in USD. While the content of your cart is currently displayed in USD, the checkout will use USD at the most current exchange rate.</div>
                     <hr>
 					<div id="shipping-calculator" class="mb-4">
                     	<h5 class="small--text-center">Get shipping estimates</h5>
@@ -153,7 +154,7 @@ $admin_logo_url=$admin_arr['logo_url'];
   							</div>
                         </div>
                     </div> 
-                    
+                     -->
                     </form>                   
                	</div>
                 <div class="col-12 col-sm-12 col-md-4 col-lg-4 cart__footer">
@@ -161,15 +162,17 @@ $admin_logo_url=$admin_arr['logo_url'];
                     <div class="solid-border">
                       <div class="row">
                       	<span class="col-12 col-sm-6 cart__subtotal-title"><strong>Subtotal</strong></span>
-                        <span class="col-12 col-sm-6 cart__subtotal-title cart__subtotal text-right"><span class="money"><?php echo $subtotal; ?></span></span>
+                        <span class="col-12 col-sm-6 cart__subtotal-title cart__subtotal text-right"><span class="money"><?php echo "₹".$subtotal; ?></span></span>
                       </div>
-                      <div class="cart__shipping">Shipping &amp; taxes calculated at checkout</div>
+                      <div class="cart__shipping">
+                        <!-- Shipping &amp; taxes calculated at checkout -->
+                    </div>
                       <p class="cart_tearm">
                         <label>
                           <input type="checkbox" name="tearm" id="cartTearm" class="checkbox" value="tearm" required="">
                            I agree with the terms and conditions</label>
                       </p>
-                      <button type="button"  name="checkout" id="cartCheckout" class="btn btn--small-wide checkout" value="Checkout" onclick="checkOut()"><span>Checkout</span></button>
+                      <button type="button"  name="checkout" id="cartCheckout" class="btn btn--small-wide checkout" value="Checkout" onclick="checkOut()" disabled><span>Checkout</span></button>
                       <div class="paymnet-img"><img src="assets/images/payment-img.jpg" alt="Payment"></div>
                     </div>
 
@@ -243,6 +246,11 @@ function changeItemQty(a,b){
 function checkOut(){
     window.location="./checkout.php";
 }
+</script>
+<script>
+    $("#cartTearm").click(function() {
+        $("#cartCheckout").attr("disabled", !this.checked);
+    });
 </script>
 <!-- belle/cart.html   11 Nov 2019 12:47:01 GMT -->
 </html>

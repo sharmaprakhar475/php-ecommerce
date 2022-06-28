@@ -1,10 +1,12 @@
 <!DOCTYPE html>
 <html class="no-js" lang="en">
 <?php 
+    include "./conn.php";
+    include "./constants.php";
     $admin_query=mysqli_query($conn,"select * from admin_settings ");
     $admin_arr=mysqli_fetch_assoc($admin_query);
     $admin_site_title=$admin_arr['site_title'];
-    $admin_logo_url=$admin_arr['logo_url'];
+    $admin_logo_url=$base_url.$admin_arr['logo_url'];
 ?>
 <!-- belle/checkout.html   11 Nov 2019 12:44:33 GMT -->
 <head>
@@ -219,7 +221,7 @@
                                                 $pr_price=$parr1['price'];
                                                 $pr_mrp=$parr1['mrp'];
                                                 $pr_wgt=$parr1['weight'];
-                                                $pr_img=$parr_img['img_path'];
+                                                $pr_img=$base_url.$parr_img['img_path'];
                                         ?>
                                         <tr>
                                             <td class="text-left"><?php echo $pr_title; ?></td>
@@ -249,7 +251,7 @@
                         
                         <hr />
 
-                        <div class="your-payment">
+                        <!-- <div class="your-payment">
                             <h2 class="payment-title mb-3">payment method</h2>
                             <div class="payment-method">
                                 <div class="payment-accordion">
@@ -343,7 +345,7 @@
                                         </div>
                                     </div>
                                 </div>
-
+ -->
                                 <div class="order-button-payment">
                                     <button class="btn" value="Place order" type="button" onclick="placeOrder();">Place order</button>
                                 </div>

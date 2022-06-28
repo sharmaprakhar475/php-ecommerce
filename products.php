@@ -14,7 +14,7 @@ $admin_logo_url=$base_url.$admin_arr['logo_url'];
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta http-equiv="x-ua-compatible" content="ie=edge">
-<title><?php echo $admin_site_title; ?> - Category Page</title>
+<title><?php echo $admin_site_title; ?> - Products Page</title>
 <meta name="description" content="description">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <!-- Favicon -->
@@ -35,39 +35,40 @@ $admin_logo_url=$base_url.$admin_arr['logo_url'];
     	<!--Page Title-->
     	<div class="page section-header text-center">
 			<div class="page-title">
-        		<div class="wrapper"><h1 class="page-width">Category Page</h1></div>
+        		<div class="wrapper"><h1 class="page-width">Products Page</h1></div>
       		</div>
 		</div>
         <!--End Page Title-->
         
         <div class="container collection-box">
-            <div class="section-header text-center">
-                <h2 class="h2">Top Categories</h2>
-                <p>Browse the huge variety of our products</p>
-            </div>
         	<div class="row">
-                <?php
-                   $cquery1=mysqli_query($conn,"select * from category where parent_id=0 ");
-                   while($carr1=mysqli_fetch_assoc($cquery1)){
-                   $c_id=$carr1['id'];
-                   $c_name=$carr1['name'];
-                   $c_img=$base_url.$carr1['img_path'];
-                   $c_des=$carr1['description']; 
+               <?php
+                    $search="";
+                    $sql="select * from product limit 8";
+                    $search=$_GET['search'];
+                    if($search==""){
+                        $sql="select * from product limit 8";
+                    }
+                    else{
+                        $sql="select * from product where title like '%$search%' limit 8";
+                    }
+                    $pquery1=mysqli_query($conn,$sql);
+                    while($parr1=mysqli_fetch_assoc($pquery1)){
+                    $p_id=$parr1['id'];
+                    $piquery1=mysqli_query($conn,"select * from product_images where product_id='".$p_id."' limit 1");
+                    $piarr1=mysqli_fetch_assoc($piquery1);
+                    $p_title=$parr1['title'];
+                    $p_img=$base_url.$piarr1['img_path'];
+                    $p_des=$parr1['description']; 
                 ?>
                    <div class="col-6 col-sm-6 col-md-3 col-lg-3">
-                   <div class="colletion-item" >
-                       <a href="<?php echo "./category-details.php?id=$c_id"; ?>">
-                           <img class="blur-up lazyload" style="border:#e7e7e7; border-width:5px; border-style:solid;" data-src="<?php echo $c_img; ?>" src="<?php echo $c_img; ?>" alt="image" title="">
+                   <div class="colletion-item">
+                       <a href="<?php echo "./product.php?id=$p_id"; ?>">
+                           <img class="blur-up lazyload" data-src="<?php echo $p_img; ?>" src="<?php echo $p_img; ?>" alt="image" title="">
+                           <span class="title"><span><?php echo $p_title; ?></span></span>
                        </a>
-                    </div>
-                    <br><br>
-                    <div>
-                        <a href="<?php echo "./category-details.php?id=$c_id"; ?>">
-                           <span class="title" style="margin:auto auto;background-color:#e7e7e7;padding-top:7px;padding-bottom:7px;width:140px;"><?php echo $c_name; ?></span>
-                        </a>    
-                    </div>
                    </div>
-                  
+                  </div>
                    <?php
                 }
                 ?>
